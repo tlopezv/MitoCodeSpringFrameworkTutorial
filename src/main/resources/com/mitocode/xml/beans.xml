@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+	<!-- default-init-method="init" default-destroy-method="destroy"> -->
+
+	<!-- <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"></bean> -->
+	
+	<context:annotation-config/>
+	<context:component-scan base-package="com.mitocode.beans"></context:component-scan>
+	
+	<bean class="com.mitocode.beans.MitoCodeBeanPostProcessor"></bean>
+
+	<!-- <bean id="mundo" class="com.mitocode.beans.Mundo">
+		<property name="saludo" value="Hola Mundo!"></property>
+	</bean> -->
+	
+	<!-- el parámetro 'autowire="byName"' hace una referencia implicita de las propiedades, que son otros objetos (definidos como Beans), referenciadas por nombre -->
+	<!-- Pero, ojo, debe coincidir el nombre de dicha propidad objeto en la clase, con el del identificador del Bean -->
+	<!-- Hay otro 'autowire="byType"' buscando el tipo de objeto que lo está implementando, si en nuestras definiciones de Beans tenemos más de un bean de la misma clase tendremos problemas  -->
+	<bean id="persona" class="com.mitocode.beans.Persona" autowire="byType" scope="singleton" lazy-init="true"> <!-- init-method="init" destroy-method="destroy"> --> <!--autowire="byName"--><!-- name="personaBean2" -->
+		<!-- 'scope="singleton"' devolverá siempre la misma instancia del objeto, y 'scope="prototype"' si que devolverá diferentes instancias  -->
+		<!-- Por defecto en Spring está en Singleton -->
+		<!-- 'lazy-init="true"' para que con el scope singleton sólo se tengan las instancias cuándo se requieran con getBean, no al iniciar la aplicación como es por defecto con las instancias singleton -->
+		
+		<!-- <constructor-arg value="1"></constructor-arg>
+		<constructor-arg value="Jaime"></constructor-arg>
+		<constructor-arg value="MitoCode"></constructor-arg> -->
+		<property name="pais" ref="pais"></property>
+		<!-- Otra forma de hacerlo es indicar la definición del Bean dentro del tag <property>, así: -->
+		<!-- <property name="pais">
+			<bean id="pais" class="com.mitocode.beans.Pais">
+				<property name="nombre" value="Perú"></property>
+				<property name="ciudad" ref="ciudad"></property>
+				Otra forma de hacerlo es indicar la definición del Bean dentro del tag <property>, así:
+				<property name="ciudad">
+					<bean id="ciudad" class="com.mitocode.beans.Ciudad">
+						<property name="nombre" value="Lima"></property>
+					</bean>
+				</property>
+				Cuando la propiedad es una lista
+				<property name="ciudades">
+					<list>
+						<ref bean="ciudad1"/>
+						<ref bean="ciudad2"/>
+						<ref bean="ciudad3"/>
+					</list>
+				</property>
+			</bean>
+		</property> -->
+		<property name="id" value="1"></property>
+		<property name="nombre" value="Jaime"></property>
+		<property name="apodo" value="MitoCode"></property>
+		<property name="ciudad" ref="ciudad"></property>
+	</bean>
+
+	<bean id="pais" class="com.mitocode.beans.Pais">
+		<property name="nombre" value="Perú"></property>
+		<!-- <property name="ciudad" ref="ciudad"></property> -->
+		<!-- Otra forma de hacerlo es indicar la definición del Bean dentro del tag <property>, así:
+		<property name="ciudad">
+			<bean id="ciudad" class="com.mitocode.beans.Ciudad">
+				<property name="nombre" value="Lima"></property>
+			</bean>
+		</property> -->
+	</bean>
+	
+	<bean id="ciudad" class="com.mitocode.beans.Ciudad">
+		<property name="nombre" value="Lima"></property>
+	</bean>
+	
+	<!-- <bean id="ciudad1" class="com.mitocode.beans.Ciudad">
+		<property name="nombre" value="Lima"></property>
+	</bean>
+	
+	<bean id="ciudad2" class="com.mitocode.beans.Ciudad">
+		<property name="nombre" value="Piura"></property>
+	</bean>
+	
+	<bean id="ciudad3" class="com.mitocode.beans.Ciudad">
+		<property name="nombre" value="Chiclayo"></property>
+	</bean> -->
+	
+	<!-- <alias name="persona" alias="personaBean"/> -->
+	
+	<bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"></bean>
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
+	
+	<!-- <bean id="messi" class="com.mitocode.beans.Jugador">
+		<property name="numero" value="10"></property>
+		<property name="nombre" value="Lionel Messi"></property>
+		<property name="equipo" ref="barcelona"></property>
+	</bean> -->
+	
+	<!-- <bean id="barcelona" class="com.mitocode.beans.Barcelona">
+		<qualifier value="barcelonaQualifier"></qualifier>
+	</bean>
+	
+	<bean id="juventus" class="com.mitocode.beans.Juventus"></bean> -->
+</beans>
